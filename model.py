@@ -1,8 +1,10 @@
 import requests
+from requests import Response
 from typing import Optional, NoReturn
 
 class BaseAPI:
-    response: requests.Response = None
+    response: Response = None
+
 
     def check_status(self, status: int) -> NoReturn:
         """Проверить статус ответа"""
@@ -13,30 +15,30 @@ class ObjectAPI(BaseAPI):
 
     BASE_URL = "https://api.restful-api.dev/objects"
 
-    def get_list_of_all_objects(self) -> requests.Response:
+    def get_list_of_all_objects(self) -> Response:
 
         self.response = requests.get(self.BASE_URL)
         return self.response
 
-    def get_list_of_objects_by_id(self, ids: list[int]) -> requests.Response:
+    def get_list_of_objects_by_id(self, ids: list[int]) -> Response:
 
         params = [('id', i) for i in ids]
         self.response = requests.get(self.BASE_URL, params=params)
         return self.response
 
-    def get_single_object(self, object_id: int) -> requests.Response:
+    def get_single_object(self, object_id: int) -> Response:
 
         url = f"{self.BASE_URL}/{object_id}"
         self.response = requests.get(url)
         return self.response
 
-    def add_object(self, name: str, data: dict) -> requests.Response:
+    def add_object(self, name: str, data: dict) -> Response:
 
         create_object = {'name': name, 'data': data}
         self.response = requests.post(url=self.BASE_URL, json=create_object)
         return self.response
 
-    def update_object(self, object_id: int, name: str, data: dict) -> requests.Response:
+    def update_object(self, object_id: int, name: str, data: dict) -> Response:
 
         update_object = {'name': name, 'data': data}
         url = f"{self.BASE_URL}/{object_id}"
@@ -44,7 +46,7 @@ class ObjectAPI(BaseAPI):
         return self.response
 
     def partially_update_object(self, object_id: int, name: Optional[str] = None,
-                                data: Optional[dict] = None) -> requests.Response:
+                                data: Optional[dict] = None) -> Response:
 
         assert name is not None or data is not None, "Нужно передать хотя бы один параметр для обновления"
         update_object = {}
@@ -56,7 +58,7 @@ class ObjectAPI(BaseAPI):
         self.response = requests.patch(url=url, json=update_object)
         return self.response
 
-    def delete_object(self, object_id: int) -> requests.Response:
+    def delete_object(self, object_id: int) -> Response:
         """Удаление объекта по id"""
 
         url = f"{self.BASE_URL}/{object_id}"
