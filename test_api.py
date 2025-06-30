@@ -24,7 +24,6 @@ class TestObjectApi:
     def test_get_single_object_by_id(self):
         """Получение одного объекта по id"""
         single_object = self.object_model.get_single_object(1).json()
-        print(single_object)
         assert single_object == self.check_data.single_object
         self.object_model.check_status(200)
 
